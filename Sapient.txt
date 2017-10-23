@@ -1,0 +1,291 @@
+C:\Users\ssah31\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Docker
+
+192.168.99.100
+docker run hello-world
+
+docker -d -p
+
+-d run in backgroung 
+-p publish nw port
+
+
+DOCKER_HOST=tcp://192.168.99.100:2376
+DOCKER_MACHINE_NAME=default
+DOCKER_TLS_VERIFY=1
+DOCKER_CERT_PATH=/Users/[username]/.docker/machine/machines/default
+
+
+docker ps 
+
+docker run -P -d --name mongodb mongo   // download image from hub and run it 
+
+
+docker exec -it mongodb sh
+# mongo
+MongoDB shell version: 3.0.6
+connecting to: test
+Server has startup warnings:
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten]
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten]
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2015-09-02T00:57:30.761+0000 I CONTROL  [initandlisten]
+> use microserviceblog
+switched to db microserviceblog
+> db.createCollection('testCollection')
+{ "ok" : 1 }
+
+CONTAINER ID        IMAGE                PORTS                      NAMES
+87192b65de95        mongo                0.0.0.0:32777->27017/tcp   mongodb
+
+We can see that the port 32777 on the host machine is forwarded to port 27017 of the container; however, remember that we are running the host machine as a VM, so we must go back to our environment variables:
+
+
+
+$ echo $DOCKER_HOST
+tcp://192.168.99.100:2376
+
+We should be able to access our Mongo container’s 27017 port by hitting: 192.168.99.100:32777. Firing up UMongo, and pointing it at that location shows the DB is accessible externally:
+
+
+java -Dspring.data.mongodb.uri=mongodb://192.168.99.100:32777/micros -jar glancore.jar     //use docker mongo check port also
+
+
+docker run -P -d --name employee --link mongodb microservicedemo/employee
+docker exec employee bash -c 'env |grep MONGODB'
+
+
+
+My app 
+
+docker run -P -d --name mongodb mongo
+
+minikube start --kubernetes-version="v1.4.0" --vm-driver="virtualbox" --show-libmachine-logs --alsologtostderr
+
+.\minikube.exe status
+
+.\kubectl.exe cluster-info
+
+.\kubectl version
+
+.\minikube.exe ip    // IP address of the cluster via the ip command
+
+ .\minikube.exe dashboard  // launch the Kubernetes Dashboard at any point via the dashboard command
+ 
+kubectl config use-context minikube    //switched to context "minikube".
+
+
+.\kubectl.exe run hello-nginx --image=nginx --port=80
+
+.\kubectl.exe get pods
+
+.\kubectl.exe expose deployment hello-nginx --type=NodePort   // expose our basic Nginx deployment as a service
+
+.\minikube.exe service hello-nginx
+Opening kubernetes service default/hello-nginx in default browser...
+
+.\kubectl scale --replicas=3 deployment/hello-nginx
+
+
+
+.\minikube.exe start --kubernetes-version="v1.4.0" --vm-driver="virtualbox" --show-libmachine-logs --alsologtostderr
+
+
+
+
+
+MONOGO 
+
+Replica 
+
+make dir 3 directory 
+
+@REM Primary
+start "a" mongod --dbpath ./db1 --port 30000 --replSet "demo"
+
+@REM Secondary
+start "b" mongod --dbpath ./db2 --port 40000 --replSet "demo"
+
+@REM Arbiter
+start "c" mongod --dbpath ./db3 --port 50000 --replSet "demo"
+
+db.getMongo()  //show ip and port running 
+
+mongo --port 30000
+
+
+Types of Cursors
+A BasicCursor means that no index was used. A BtreeCursor means a normal index was used. Parallel cursors are used by sharding and geospatial indexes use their own special cursors
+
+
+
+
+
+//bangprn1      //for printer config 
+
+use mydb  //swith or create database 
+show dbs  / list all databases 
+db  //current database 
+db.mycollection.insert({"name" : "satish"})     
+db.createcollection("mycollection")
+show collections
+
+
+
+
+
+If you have a package.json file in your directory and you run npm install, npm will look at the dependencies that are listed in that file and download the latest versions satisfying semver rules for all of those.
+
+Patch releases: 1.0 or 1.0.x or ~1.0.4
+Minor releases: 1 or 1.x or ^1.0.4
+Major releases: * or x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=================================================================
+
+
+
+Glancore 
+
+Stop All Containers
+
+# docker stop $(docker ps -a -q)
+Remove All Containers
+
+# docker rm $(docker ps -a -q)
+
+
+enable rabbitmq management plugin from cli of rabbit mq
+
+rabbitmq-plugins enable rabbitmq_management
+
+
+Start and stop rabbitmq from rabbitmqctl CLI 
+
+rabbitmqctl stop_app
+rabbitmqctl start_app
+
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-devtools</artifactId>
+<optional>true</optional>
+</dependency>
+
+
+
+Names like createUser, likePost, updateComment, and reloadUserFeed are preferable to names like userCreate, postLike, commentUpdate, and userFeedReload.
+
+
+
+
+
+{
+  "input": {
+    "side": "BUY",
+    "quantity": "90",
+    "price": "99",
+    "tradeDate": "10/10/2017",
+    "status": "OPEN" ,    
+    "counterParty": "Apple IOC",
+    "commodity" : "ZN",
+    "location" : "Karnataka"
+    
+    
+  }
+}
+
+
+mutation TradeInput {
+  addTrade(input: $input) {
+    status
+  }
+}
+
+
+
+npm init for your project 
+npm init --yes
+
+npm config set save=true
+
+
+GRAPHQL :
+
+graphql is between front end client and backed service.
+single communication medium .
+GQL is strong type system  ans hierarchal graph based structure 
+avoid over fetch data 
+
+data query language and runtime 
+
+Language - query , mutation , subscription , fragmentation 
+runtime - validation , type system , execution , introspection 
+
+/graphql 
+?query=...
+&operationName=
+
+1.read input from interface 
+2 parst into AST abstract tree
+3. resolver function for nodes 
+4 resolver funtion for child nodes 
+5 ask data services 
+6 merge data returned from services 
+7 send response 
+
+
+At startup Graphiql tool cache or fetch all capablity of graphql server 
+
+scaler fiels  string int 
+ complex fildes object 
+ 
+ fragments use ... spread operators 
+ 
+ satish postgrep 5432
+ 
+ 
+ nodemon --exec node lib\index.js
+ 
+ under scrips in package.json     "dev" : "nodemon -exec node lib/index.js"  
+from command line run 
+ npn run dev 
+ 
+ sape1234
+ssah31
+
+ kill port in windows 
+ 
+netstat -o -n -a | findstr 0.0:3000
+taskkill /F /PID 8181

@@ -1,0 +1,890 @@
+select id ,(a.amc-b.amd) from (select id,sum(amount) as amc from dc where type='C' group by id) a ,
+
+(select id,sum(amount) as and from dc where type='D' group by id) b where a.id=b.id
+
+select min(sal) from(select distinct(sal) from emp  where rownum<=3 order by sal desc);
+
+
+
+// All basic query
+http://javarevisited.blogspot.in/2017/02/top-6-sql-query-interview-questions-and-answers.html
+
+
+final List<Runnable> rejected = executorService.shutdownNow();
+log.debug("Rejected tasks: {}", rejected.size());
+This time all queued tasks are discarded and returned. Already running jobs are allowed to continue. 
+
+
+ The memory effects for accesses and updates of atomics generally follow the rules for volatiles happen-before conditions.
+ So another advantage is ‘no context switching’ or one can say ‘Thread-Safe
+ 
+ 
+ 
+ public void execute(Runnable command)
+Executes the given task sometime in the future. The task may execute in a new thread or in an existing pooled thread.
+ If the task cannot be submitted for execution, either because this executor has been shutdown or because its capacity has been reached,
+ the task is handled by the current RejectedExecutionHandler.
+Parameters:
+command - the task to execute
+Throws:
+RejectedExecutionException - at discretion of RejectedExecutionHandler, if the task cannot be accepted for execution
+NullPointerException - if command is null
+
+
+Ans: There are different policy within ThreadPoolExecutor in java.
+a. ThreadPoolExecutor.AbortPolicy : AbortPolicy is a handler for rejected task. It handles those task which has been rejected.
+b. ThreadPoolExecutor.CallerRunsPolicy : This also handles the rejected task and runs the rejected task directly.
+c. ThreadPoolExecutor.DiscardOldestPolicy : This handles those rejected task that is oldest and unhandled. It discards those that oldest task.
+d. ThreadPoolExecutor.DiscardPolicy : This is the handler for those rejected task that are rejected silently.
+
+
+
+
+
+callable exception can handle by get future
+runnable exception handle by extend ploicy or make queue or from rejection execution handler u can call directly run 
+
+1. Future is a base interface and defines abstraction of an object which promises result to be available in future while FutureTask 
+is an implementation of the Future interface.
+
+2. Future is a parametric interface and type-safe written as Future<V>, where V denotes value.
+
+3. Future provides get() method to get result, which is blocking method and blocks until result is available to Future.
+
+4. Future interface also defines cancel() method to cancel task.
+
+5. isDone() and isCancelled() method is used to query Future task states. isDone() returns true if task is completed and result is available to Future.
+ If you call get() method, after isDone() returned true then it should return immediately. On the other hand, isCancelled() method returns true,
+ if this task is cancelled before its completion.
+
+Read more: http://javarevisited.blogspot.com/2015/01/how-to-use-future-and-futuretask-in-Java.html#ixzz4sf8FG2Pg
+
+
+ExecutorService executorService = Executors.newFixedThreadPool(4);
+CompletionService executorCompletionService= new ExecutorCompletionService<>(executorService );
+Then again we can submit the tasks and get the result like:
+List<Future> futures = new ArrayList<Future<Integer>>();
+futures.add(executorCompletionService.submit(A));
+futures.add(executorCompletionService.submit(B));
+futures.add(executorCompletionService.submit(C));
+futures.add(executorCompletionService.submit(D));
+
+for (int i=0; i<futures.size(); i++) {
+    Integer result = executorCompletionService.take().get();  //  take return future object take is blocking queue 
+    // Some processing here
+}
+
+
+
+
+Result r = ecs.take().get();
+                    if (r != null) {
+                        result = r;
+                        break;
+                    }
+                } catch(ExecutionException ignore) {}
+            }
+        }
+        finally {
+            for (Future<Result> f : futures)
+                f.cancel(true);
+        }
+		
+		https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CompletionService.html
+		
+		https://dzone.com/articles/executorcompletionservice
+
+Good Design :  easier to change 
+Software is never written it is rewitten 
+reviw code and design 
+
+Kis keep it simple - easier to understnd 
+Simple:  simple keep you focused 
+			simple solve our real problem we know about it 
+			simple fails less 
+			simple is easier to understand 
+			simple is not necessary familier
+			
+YAGNI “You Aren’t Gonna Need It
+
+
+void m(int x,int... o) {
+	}
+
+	void m(int... c) {
+	}
+
+new Test().m(1,7,2); //CE
+
+
+
+Encapsulation is the ability of an object to be a container (or capsule) for related properties (ie. data variables) and methods (ie. functions). 
+Abstraction is the process of hiding the details and exposing only the essential features of a particular concept or object. 
+
+encapsulation:- it means binding up of data and methods it means the concept of class in which we put together the data members and methods or function members.
+abstraction:- it means that hiding the background details which are not useful to the user for it we use normaly private or protected access specifier.
+by it data is not let free to move around the system.
+
+ANY-ACCESS-MODIFIER static final long serialVersionUID = 42L;
+
+Changes to a serializable class can be compatible or incompatible. Following is the list of changes which are compatible:
+
+Add fields
+Change a field from static to non-static
+Change a field from transient to non-transient
+Add classes to the object tree
+
+List of incompatible changes:
+Delete fields
+Change class hierarchy
+Change non-static to static
+Change non-transient to transient
+
+Change type of a primitive field
+
+
+Other than Serialization what are the different approach to make object Serializable?
+
+XML serialization is an often-used approach for data interchange. This approach lags runtime performance when compared with Java serialization, 
+both in terms of the size of the object and the processing time. With a speedier XML parser, the performance gap with respect to the processing time narrows.
+ Nonetheless, XML serialization provides a more malleable solution when faced with changes in the serializable object.
+Finally, consider a "roll-your-own" serialization approach. You can write an object's content directly via either the ObjectOutputStream or 
+the DataOutputStream. While this approach is more involved in its initial implementation, it offers the greatest flexibility and extensibility. 
+In addition, this approach provides a performance advantage over Java serialization.
+
+ If the object to be serialized includes references to the other objects, then all those object’s state also will be saved as the part of the serialized
+ state of the object in question. The whole object graph of the object to be serialized will be saved during serialization automatically provided all the objects included in the object’s graph are serializable.
+ 
+ f you try to serialize an object of a class which implements serializable, but the object includes a reference to an non-serializable class then
+ a ‘NotSerializableException’ will be thrown at runtime
+ 
+ try {
+                  os.writeInt(this.id);
+                  os.writeObject(this.name);
+           } catch (Exception e) {
+                  e.printStackTrace();
+           }
+		   
+		   When we Deserialize class ( class which has been modified after Serialization and also class doesn’t declare SerialVersionUID) InvalidClassException 
+		   is thrown.
+		   
+		   Modifying the writeObject() / readObject() method - we must not modify these method, though adding or removing them completely is compatible change.
+		   
+		   We can can convert JSON to transfer the object. JSON is helpful in stringifying and de stringifying object.
+>Hibernate (ORM tool) helps in persisting object as it in database and later we can read persisted object.
+>We can convert object into XML (as done in web services) and transfer object over network.
+
+
+modification is made in static member by any of the object, it won’t be in sync with other serialized object’s value.
+
+If superclass has implemented Serializable - constructor is not called during DeSerialization process.
+If superclass has not implemented Serializable - constructor is called during DeSerialization process.
+
+  int will be initialized to 0 and Integer will be initialized to null during DeSerialization
+  
+  Question 21. Purpose of serializing Singleton class OR  purpose of saving singleton state?
+Answer. Let’s take example of our laptop, daily eod we need to shut it down, but rather than shutting it down hibernate (save state of  laptop) 
+is better option because it enables us to resume at same point where we leaved it, like wise serializing singleton OR saving state of Singleton 
+can be very handy.
+
+For example, in the following (broken) code fragment, assume that this.done is a non-volatile boolean field:
+
+while (!this.done)
+    Thread.sleep(1000);
+The compiler is free to read the field this.done just once, and reuse the cached value in each execution of the loop. This would mean that the loop would never terminate, even if another thread changed the value of this.done.
+
+class B {
+
+	public void m() {
+	}
+}
+
+interface S {
+	void m();
+}
+
+class A extends B implements S {
+}
+//works fine no problem 
+
+
+class Dog implements Comparator<Dog>, Comparable<Dog> {
+
+ Collections.sort(list);   // Sorts the array list comparable        
+ Collections.sort(list, new Dog()); // Sorts the array list using comparator
+	  
+	  
+equals() is used in most collections to determine if a collection contains a given element
+boolean contains123 = list.contains("123");
+
+The equals() method is also used when removing elements. For instance:
+boolean removed = list.remove("123");
+When inserting an object into a hastable you use a key. The hash code of this key is calculated, and used to determine where to store the object internally.
+ When you need to lookup an object in a hashtable you also use a key. The hash code of this key is calculated and used to determine where to search for 
+ the object.
+
+a combination of the hashCode() and equals() methods are used when storing and when looking up objects in a hashtable.
+
+f object1 and object2 are equal according to their equals() method, they must also have the same hash code.
+If object1 and object2 have the same hash code, they do NOT have to be equal too.
+
+An inner class declared without a class name is known as an anonymous inner class. In case of anonymous inner classes, we declare and instantiate them at the same time. Generally, they are used whenever you need to override the method of a class or an interface. 
+
+Class Reordering {
+  int x = 0, y = 0;
+  public void writer() {
+    x = 1;
+    y = 2;
+  }
+
+  public void reader() {
+    int r1 = y;
+    int r2 = x;
+  }
+}
+
+
+private static class LazySomethingHolder {
+  public static Something something = new Something();
+}
+
+public static Something getInstance() {
+  return LazySomethingHolder.something;
+}
+This code is guaranteed to be correct because of the initialization guarantees for static fields; if a field is set in a static initializer, 
+it is guaranteed to be made visible, correctly, to any thread that accesses that class.
+
+
+LISCOVE 
+
+class Bird {
+02
+  public void fly(){}
+03
+  public void eat(){}
+04
+}
+05
+class Crow extends Bird {}
+06
+class Ostrich extends Bird{
+07
+  fly(){
+08
+    throw new UnsupportedOperationException();
+09
+  }
+10
+
+Derived class may require less functionalities than the Base class, so some methods would be redundant.
+
+
+
+The one problem with this approach is that, the object would get created as soon as the class gets loaded into the JVM. If the object is never requested,
+ there would be an object useless inside the memory.
+It’s always a good approach that an object should get created when it is required. So, we will create an object on the first call and 
+then will return the same object on other successive calls.
+
+
+
+private static class LazySomethingHolder {
+  public static Something something = new Something();
+}
+
+//Private constructor mandatory 
+
+public static Something getInstance() {
+  return LazySomethingHolder.something;
+}
+
+
+class VolatileExample {
+  int x = 0;
+  volatile boolean v = false;
+  public void writer() {
+    x = 42;
+    v = true;
+  }
+
+  public void reader() {
+    if (v == true) {
+      //uses x - guaranteed to see 42.
+    }
+  }
+}
+
+Assume that one thread is calling writer, and another is calling reader. The write to v in writer releases the write to x to memory,
+ and the read of v acquires that value from memory. Thus, if the reader sees the value true for v, it is also guaranteed to see the write to 42
+ that happened before it. This would not have been true under the old memory model.  If v were not volatile, then the compiler could reorder the 
+ writes in writer, and reader's read of x might see 0.
+ 
+ Because Strings are immutable, when using + operator to concatenate two strings, a brand new String is created.
+ The underlying code is actually using a StringBuffer to implement the concatenation, but the point is that the new String is allocated 
+ “normally” in the heap and not in the string pool.
+ 
+ When calling intern, the system follows the same procedure as if we did s3 = “abc”, but without using literals.
+ 
+ -XX:StringTableSize option. Having said that, you could potentially create your own String pool for that matter,
+
+
+ private static Class getClass(String classname) throws ClassNotFoundException {
+32
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+33
+        if(classLoader == null)
+34
+            classLoader = Singleton.class.getClassLoader();
+35
+        return (classLoader.loadClass(classname));
+36
+    }
+
+	To prevent the singleton getting instantiated from different class loaders, you can implement the getClass() method. The above getClass() method associates the classloader with the current thread; if that classloader is null, the method uses the same classloader that loaded the singleton class.
+	
+	
+	INPUT: (4,5), (3, 2) (4, 3) (5,4) (6,4)
+	
+	OUTPUT1: (3, 2),  (4, 5),  (4,3),  (5,4),  (6,4)  //stable as order is same 
+OUTPUT2: (3, 2),  (4, 3),  (4,5),  (5,4),  (6,4)
+
+Read more: http://javarevisited.blogspot.com/2017/06/difference-between-stable-and-unstable-algorithm.html#ixzz4sp34dPOg
+
+Serial garbage collector advantage   - client having low procesor 
+-XX:PrintGCDetails  log enable for GC
+
+failSafeIterator.remove(); //not supported in CopyOnWriteArrayList in Java
+
+-XX:+UseParallelGC
+
+With this command line option you get a multi-thread young generation collector with a single-threaded old generation collector.
+
+With the -XX:+UseParallelOldGC option, the GC is both a multithreaded young generation collector and multithreaded old generation collector. It is also a multithreaded compacting collector. 
+
+To enable the CMS Collector use:
+-XX:+UseConcMarkSweepGC
+and to set the number of threads use:
+-XX:ParallelCMSThreads=<n>
+
+
+ The contract was public void run() which meant you had to catch checked exceptions and do something with them. Even if you were careful and you stored these for later verification, you couldn’t force all uses of the class to check the exception. You could go through all your getters and throw the Exception if it existed on each one.
+ 
+ public class Calculator {
+02
+    private int calculatedValue;
+03
+    private int value;
+04
+    private ReadWriteLock lock = new ReentrantReadWriteLock();
+05
+ 
+06
+    public void calculate(int value) {
+07
+        lock.writeLock().lock();
+08
+        try {
+09
+            this.value = value;
+10
+            this.calculatedValue = doMySlowCalculation(value);
+11
+        } finally {
+12
+            lock.writeLock().unlock();
+13
+        }
+14
+    }
+15
+ 
+16
+    public int getCalculatedValue() {
+17
+        lock.readLock().lock();
+18
+        try {
+19
+            return calculatedValue;
+20
+        } finally {
+21
+            lock.readLock().unlock();
+22
+        }
+23
+    }
+24
+ 
+25
+    public int getValue() {
+26
+        lock.readLock().lock();
+27
+        try {
+28
+            return value;
+29
+        } finally {
+30
+            lock.readLock().unlock();
+31
+        }
+32
+    }
+33
+}
+
+his example actually shows one big advantage using synchronized has: it is concise and more foolproof than using explicit locks. But locks give use flexibility we wouldn’t otherwise have.
+In the example above, we can have hundreds of threads reading the same value at once with no issue, and we only block readers when we acquire the write lock. Remember that: many readers can acquire the read lock at the same time, but there are no readers OR writers allowed when acquiring the write lock.
+
+
+search pluin name based 
+filter 
+hd price genre language   qury cmdc 
+
+guide synopsis pf synopsisi remiderlugin optionlist plugin 
+
+handler view controller states.xml 
+
+onselect onclick 
+popup pririoriy  queue to main low order 
+
+Why getter and setter 
+variable oveerriging not possible so 
+
+
+								false // insertion order not required 
+LinkedHashMap lhm = new LinkedHashMap(MAX_ENTRIES + 1, .75F, false) {
+
+			protected boolean removeEldestEntry(Map.Entry eldest) {
+				
+				System.out.println("Always called during put ");
+				return size() > MAX_ENTRIES;
+			}
+		};
+		
+Jakarta is the group name for the Java based projects of the Apache Software foundation.
+
+Tomcat 7.x implements the Servlet 3.0 and JSP 2.2 specifications. It requires Java version 1.6.
+
+You can drop the WAR file inside the webapps folder or use the Tomcat manager to deploy War files
+
+Tomcat server provides a host of services which are not provided by normal web servers like Apache Web Server. Those are:
+Servlet Life cycle
+Handle Web Requests
+Database connection pooling
+Clustering
+High availability
+
+Where do you configure a database connection pool in Tomcat server?
+The Configure pool is in the context.xml inside the conf folder of tomcat.
+
+Tomcat is a servlet container that supports servlets and the JSP technology. An Application server supports many other Java EE technologies
+
+Jasper is Tomcat’s JSP Engine. Jasper parses JSP files to compile them into Java code as servlets. At runtime, Jasper detects changes to JSP files and recompiles them. Jasper is the Java Server pages handler in Tomcat; internally, it deals with any compiling that’s neccessary, and converts JSPs into Servlets for Catalina to handle
+Catalina is Tomcat’s servlet container. Catalina implements specifications for servlet and JavaServer Pages. Catalina is the Java Engine (JRE / JVM) that’s built into Tomcat and provides an environment in which Servlets can be run
+
+This component is used to manage large applications. It is used for load balancing and can be achieved through many techniques. Apache Tomcat cluster is used to manage more traffic. It provides multiples instances of the Tomcat server with its content balanced between these instances.
+
+The basic difference between a web server and an
+application server is Webserver can execute only web applications i,e servlets and JSPs and has only a single container known as Web container which is used to interpret/execute web
+applications.
+Application server can execute Enterprise application, i,e (servlets, jsps, and EJBs) it is having two containers
+
+Web Container(for interpreting/executing servlets and jsps)
+EJB container(for executing EJBs). it can perform operations like load balancing , transaction demarcation etc.
+
+In case of Statement, query is complied each time whereas in case of PreparedStatement, query is complied only once. So performance of PreparedStatement is better than Statement.
+
+public PreparedStatement prepareStatement(String query)throws SQLException{} 
+
+PS is sub interface of Statement 
+
+public int executeUpdate()	executes the query. It is used for create, drop, insert, update, delete etc.
+public ResultSet executeQuery()	executes the select query. It returns an instance of ResultSet.
+
+
+A Connection is the session between java application and database. The Connection interface is a factory of Statement, PreparedStatement, and DatabaseMetaData i.e. object of Connection can be used to get the object of Statement and DatabaseMetaData. The Connection interface provide many methods for transaction management like commit(), rollback() etc.
+
+The DriverManager class manages the registered drivers. It can be used to register and unregister drivers. It provides factory method that returns the instance of Connection.
+
+By default, ResultSet object can be moved forward only and it is not updatable.
+
+But we can make this object to move forward and backward direction by passing either TYPE_SCROLL_INSENSITIVE or TYPE_SCROLL_SENSITIVE in createStatement(int,int) method as well as we can make this object as updatable by:
+
+Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,  
+                     ResultSet.CONCUR_UPDATABLE); 
+			
+
+write replace proxy design pattern 
+
+Book and authoe is many to many relationship
+
+One to one We can put the customer address information on a separate table: Address
+
+one to many : Customers can make many orders.
+Orders can contain many items.
+Items can have descriptions in many languages.	
+
+
+
+
+
+<button type="button" onclick="document.getElementById('demo').style.fontSize='35px'">Click Me!</button>  //CSS  layout 
+
+document.getElementById("demo").innerHTML = "Hello JavaScript"; //HTML changes the element content 		
+
+JavaScript code must be inserted between <script> and </script> tags.
+Old JavaScript examples may use a type attribute: <script type="text/javascript">.
+The type attribute is not required. JavaScript is the default scripting language in HTML.
+
+A JavaScript function is a block of JavaScript code, that can be executed when "called" for.
+
+For example, a function can be called when an event occurs, like when the user clicks a button.
+
+
+External scripts are practical when the same code is used in many different web pages.
+External file: myScript.js
+
+function myFunction() {
+   document.getElementById("demo").innerHTML = "Paragraph changed.";
+}
+
+Placing scripts at the bottom of the <body> element improves the display speed, because script compilation slows down the display.
+To use an external script, put the name of the script file in the src (source) attribute of a <script> tag:
+
+<script src="myScript.js"></script>
+You can place an external script reference in <head> or <body> as you like.
+
+The script will behave as if it was located exactly where the <script> tag is located.
+
+External scripts cannot contain <script> tags
+
+<script src="https://www.w3schools.com/js/myScript1.js"></script>
+
+
+Writing into an HTML element, using innerHTML.
+Writing into the HTML output using document.write().
+Writing into an alert box, using window.alert().
+Writing into the browser console, using console.log().
+
+
+
+Changing the innerHTML property of an HTML element is a common way to display data in HTML
+
+<script>
+document.write(5 + 6);
+</script>
+
+Using document.write() after an HTML document is fully loaded, will delete all existing HTML:
+The document.write() method should only be used for testing.
+<script>
+window.alert(5 + 6);
+</script>
+
+In HTML, JavaScript programs are executed by the web browser.
+
+The JavaScript syntax defines two types of values: Fixed values and variable values.
+
+Fixed values are called literals. Variable values are called variables.
+
+The var keyword tells the browser to create variables:
+Hyphens are not allowed in JavaScript. It is reserved for subtractions.
+
+The statements are executed, one by one, in the same order as they are written.
+
+On the web, you might see examples without semicolons. 
+Ending statements with semicolon is not required, but highly recommended.
+
+
+After the declaration, the variable has no value. (Technically it has the value of undefined)
+
+If you re-declare a JavaScript variable, it will not lose its value.
+
+The variable carName will still have the value "Volvo" after the execution of these statements:
+
+var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+
+person = null;        // Now value is null, but type is still an object
+
+You can consider it a bug in JavaScript that typeof null is an object. It should be null.
+
+person = undefined;   // Now both value and type is undefined
+
+
+await(long time,TimeUnit units); This method is same as the above method but the thread here is paused for a given time.
+ If other threads that need to be paused are not paused within the given time, then this thread throws a TimeoutException. 
+ You can chose to continue the execution of this thread by handling the exception.
+
+ 
+ 
+ reset(); This method resets the barrier to the initial state. It throws a BrokenBarrierException in the threads that are paused. You can chose to continue those threads' execution by handling the exception. As the threads are resumed, barrier thread will not be executed until again, the required threads are paused.
+ 
+ http://kamalmeet.com/algorithms/hashmap-collision-handling-using-chaining-and-open-addressing/
+ 
+ 
+ // No overriding in this case 
+class Parent {
+
+	void m(Integer x) { 
+
+		System.out.println("x");
+	}
+
+}
+
+class Child extends Parent {
+
+	void m(int y) {
+		System.out.println("y");
+	}
+
+}
+
+
+SPRING BOOT:
+Spring Boot is a Spring module which provides RAD (Rapid Application Development) feature to Spring framework.
+
+
+Connect convey convience
+GIVE 110 %
+Listin acknologe clarify explain
+Need intrest concern 
+dont equate potential with salary   give u will get more 
+loving rel
+
+It is not the strongest of the species that survives, nor the most intelligent that survives. It is the one that is most adaptable to change
+
+where was our Mongo again? Looking at our “Docker PS” output, we remember that port 32777 on our VM was forwarded to our Mongo container 27017, and our VM IP was 192.168.99.100. As mentioned previously, we can pass this connection information to Spring by passing an environment property, 
+
+Both Spring AMQP and Spring RabbitMQ Modules are from Pivotal Team (Spring Framework). RabbitMQ servers is also from Pivotal Team.
+ActiveMQ Server is from Apache Software Foundation. Apache ActiveMQ has released an API to support Spring Framework that is activemq-spring (It’s not from Pivotal Team).
+
+
+
+
+
+
+
+
+
+
+JAVASCRIPT :
+
+JS is lightweighted , interprited , object oriented language , scripting language for web pages , can also used in non-browser environment also 	
+
+lightweight - less memory footprint , easy to implement 
+interprited - no compilation , directly execute
+objected oriented - modeled around object 
+first class function - funtion as values , java 8 
+scripting langauage - bat file for windows , set of instrutions into a file , linux scripting 
+
+Runtime environment - web browser 
+response is in form of string contains js and html tags , browser create dom tree by seeing tags of html .
+
+HTML is static - result is always same execute multiple times 
+js is dynamic it modify DOM tree based on logic 
+
+Why javaScript ?
+
+client side web development 
+	jqeury framework - use js
+	advance framework : angular js , react ember (all use js )
+	
+Server side development 
+	Nodejs (listen request and response web pages )
+	expree 
+browser extensions  written in js 
+mobile , desktop IOT application uses js 
+
+js is most loved and most hated languages 
+
+History :
+created by Brenden Eich at Nestscape 
+java applet was popular at those days 
+js created in 10 days 
+forgive language , made mistakes still program run 
+ECMAScript(registerd with ECMA ) = js 
+
+firefox use it has tools 
+developer > toggle tool    // can enter only one line 
+use stratchpad for multiple lines 
+
+console.log  console is object and log is method as console is global object 
+
+primitive type : 
+number 
+string
+boolean
+undefined 
+null
+
+
+Number string boolean datatype 
+number is double precision 64 bit 
+String 16 bit 
+var number=10.9;
+var bool=true;
+var str="hello";
+console.log(bool);
+console.log(number);
+console.log(str);
+
+number="loose typing in js "
+console.log(number);// loose typing in js 
+
+var v;
+console.log(v);   //undefined 
+
+
+form data if no value entered then it is undefined if value is N/A then null 
+
+form firstname middlename lastname    middlename is null
+
+ecma 6 - symbol data type   like enum
+
+no scope for variables 
+
+typeof :  
+
+var un;
+console.log(typeof t); //undifned
+var str="hello";
+console.log(typeof str); //string
+
+var num=10;
+console.log(typeof num);
+var bool=true;
+console.log(typeof bool);//boolean
+
+bool=null;
+console.log(typeof bool); //object   //bug 
+
+type coresion  123 +"4"   interpreter do conversion for us 
+
+== check value irrespective of datatype 
+
+var a=9;
+var b="9";
+console.log(a==b);
+
+===  check datatype also 
+
+var a=9;
+if(a)  // non zero true
+empety string true 
+
+null and undefined  //false 
+
+
+var myObj={}
+console.log(myObj);   //Object {  }
+
+
+myObj.prop=123;
+console.log(myObj); //dynamically add properties of object 
+
+accessing property that not exist is undefined 
+
+object property can access using . and []
+difference between . adn [] 
+var myObj={
+  
+  "prop": "name",
+  "1":123
+};
+
+console.log(myObj.prop);
+//console.log(myObj.1); //error
+console.log(myObj["1"]);
+
+[] 
+
+property started by number cannot accessed by dot operator use []   / reserved words  / invalid identefier 
+property name is dynamic 
+
+
+var myObj={
+  
+  "prop": "name",
+  "1":123
+};
+
+var value="prop";
+console.log(myObj[value]); //dyanmic property name from outside  // print name 
+
+nested object 
+
+var myObj={
+"innerObj" : { "pro" :" val"}
+};
+
+
+two objects are == only they pointing same location to memory .
+
+var myObj={
+  
+  "prop": "name",
+  "1":123
+};
+
+var myObj1={
+  
+  "prop": "name",
+  "1":123
+};
+
+console.log(myObj==myObj1);
+
+space also considered in variable names 
+
+undefined vs null
+
+var persion{
+'firstName':'satish',
+'middleName':null,
+'lastName':'sahu',
+};
+
+persion.age //undefined 
+person.middleName // null    // property not applicable to this object
+
+delete property from objects
+
+person.fiestName = undefined  // but if we print object it will show 
+
+delete person.firstName ; // it actually delete value  from memory ie heap 
+
+Arrays
+
+
+var myArr = [10,20];
+
+myArr[4]=30;
+console.log(myArr);    Array [ 10, 20, < 2empty slots>, 30 ]  // length max index ie 4 
+console.log(myArr[3]); //undefined
+
+myArr['foo'] = 'satish'; //length same but it is object so it will add in array 
+
+function myf(){
+   t=90;
+};
+myf();
+console.log(t)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
